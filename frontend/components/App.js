@@ -29,6 +29,7 @@ export default function App() {
     // In any case, we should redirect the browser back to the login screen,
     // using the helper above.
     localStorage.removeItem('token');
+    setMessage('Goodbye!')
     navigate('/');
   }
 
