@@ -51,6 +51,7 @@ const loginFlow = async () => {
   await screen.findByText('Here are your articles, Foo!', queryOptions, waitForOptions)
 }
 
+
 describe('Advanced Applications', () => {
   describe('Login', () => {
     test(`[1] Submit credentials button is disabled until
