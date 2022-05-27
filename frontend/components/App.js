@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
-import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
-import AxiosLogin from '../axios'
+import { NavLink, Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import axios from 'axios';
 
 import Articles from './Articles'
@@ -46,7 +45,14 @@ export default function App() {
       username: userName,
       password: passWord
     }
-    AxiosLogin(loginUrl, credentials);
+    axios.post(loginUrl, credentials)
+    .then(res => {
+    localStorage.setItem('token', res.data.token);
+    setMessage(res.data.message);
+    })
+    .catch(err => {
+    console.log(err)
+   })
     navigate('/articles');
   }
 
@@ -60,7 +66,6 @@ export default function App() {
     // if it's a 401 the token might have gone bad, and we should redirect to login.
     // Don't forget to turn off the spinner!
     const token = localStorage.getItem('token');
-    console.log(token)
 
     axios.get(articlesUrl, {headers: {authorization: token}})
     .then(res => {
@@ -88,7 +93,7 @@ export default function App() {
   const deleteArticle = article_id => {
     // ✨ implement
   }
-
+ 
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
@@ -99,7 +104,7 @@ export default function App() {
         <h1>Advanced Web Applications</h1>
         <nav>
           <NavLink id="loginScreen" to="/">Login</NavLink>
-          <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
+          <NavLink id="articlesScreen" to='/articles'>Articles</NavLink>
         </nav>
         <Routes>
           <Route path="/" element={<LoginForm login={login}/>} />
