@@ -39,7 +39,7 @@ export default function App() {
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
-    setSpinnerOn(true)
+    setSpinnerOn(true);
     setMessage('');
     const credentials = {
       username: userName,
@@ -63,10 +63,13 @@ export default function App() {
 
     axios.get(articlesUrl, {headers: {authorization: token}})
     .then(res => {
-     setArticles(res.data.articles)
+      if (res.data.articles !== null) {
+        setArticles(res.data.articles)
+        setSpinnerOn(false)
+      } else {
+        return null;
+      }
     })
-
-    setSpinnerOn(false);
   }
 
   const postArticle = article => {
@@ -102,7 +105,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <ArticleForm />
-              <Articles articleGetter={getArticles} articles={articles} />
+              <Articles articleGetter={getArticles} articles={articles} spinner={setSpinnerOn}/>
             </>
           } />
         </Routes>

@@ -4,7 +4,7 @@ import PT from 'prop-types'
 
 export default function Articles(props) {
   console.log(props);
-  const {articleGetter, articles} = props;
+  const {articleGetter, articles, spinner} = props;
   // ✨ where are my props? Destructure them here
 
   // ✨ implement conditional logic: if no token exists
