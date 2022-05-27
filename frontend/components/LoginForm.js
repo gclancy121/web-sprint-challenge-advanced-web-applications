@@ -34,10 +34,11 @@ export default function LoginForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
+
     // ✨ implement
-    const form = evt.target;
-    const username = form.username.value;
-    const password = form.password.value;
+
+    const username = values.username;
+    const password = values.password;
     login(username, password);
   }
 

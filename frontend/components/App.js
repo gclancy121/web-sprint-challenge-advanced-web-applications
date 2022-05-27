@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { NavLink, Routes, Route, useNavigate, Navigate } from 'react-router-dom'
+import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
 import axios from 'axios';
 
+import { PrivateRoute } from './PrivateRoute';
 import Articles from './Articles'
 import LoginForm from './LoginForm'
 import Message from './Message'
@@ -39,7 +40,7 @@ export default function App() {
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
-    setSpinnerOn(true);
+    // setSpinnerOn(true);
     setMessage('');
     const credentials = {
       username: userName,
@@ -48,12 +49,12 @@ export default function App() {
     axios.post(loginUrl, credentials)
     .then(res => {
     localStorage.setItem('token', res.data.token);
-    setMessage(res.data.message);
+    navigate('/articles');
     })
     .catch(err => {
     console.log(err)
    })
-    navigate('/articles');
+   
   }
 
   const getArticles = () => {
@@ -69,12 +70,10 @@ export default function App() {
 
     axios.get(articlesUrl, {headers: {authorization: token}})
     .then(res => {
-      if (res.data.articles !== null) {
+      console.log(res)
         setArticles(res.data.articles)
-        setSpinnerOn(false)
-      } else {
-        return null;
-      }
+        setMessage(res.data.message)
+        setSpinnerOn(false);
     })
   }
 
@@ -106,12 +105,15 @@ export default function App() {
           <NavLink id="loginScreen" to="/">Login</NavLink>
           <NavLink id="articlesScreen" to='/articles'>Articles</NavLink>
         </nav>
+        {}
         <Routes>
           <Route path="/" element={<LoginForm login={login}/>} />
           <Route path="articles" element={
             <>
-              <ArticleForm />
-              <Articles articleGetter={getArticles} articles={articles} spinner={setSpinnerOn}/>
+              <PrivateRoute>
+                <ArticleForm />
+                <Articles getArticles={getArticles} articles={articles} />
+              </PrivateRoute>
             </>
           } />
         </Routes>

@@ -128,83 +128,83 @@ describe('Advanced Applications', () => {
       expect(token()).toBeFalsy()
     })
   })
-  describe('Posting a new article', () => {
-    test(`[5] Submit button is disabled on page load`, async () => {
-      await loginFlow()
-      expect(submitArticleBtn()).toBeDisabled()
-    })
-    test(`[6] Filling out the article form and submitting
-        - resets the form
-        - adds a new article to the page
-        - a success message renders on the page`, async () => {
-      await loginFlow()
-      // filling out form
-      fireEvent.change(titleInput(), { target: { value: 'Fancy Title' } })
-      fireEvent.change(textInput(), { target: { value: 'Fancy text' } })
-      fireEvent.change(topicSelect(), { target: { value: 'React' } })
-      expect(titleInput()).toHaveValue('Fancy Title')
-      expect(textInput()).toHaveValue('Fancy text')
-      expect(topicSelect()).toHaveValue('React')
-      // submission renders new article
-      fireEvent.click(submitArticleBtn())
-      await screen.findByText('Fancy Title', queryOptions, waitForOptions)
-      screen.getByText('Fancy text', queryOptions)
-      expect(screen.getAllByText('Topic: React', queryOptions)).toHaveLength(2)
-      // inputs are cleared
-      expect(titleInput()).toHaveValue('')
-      expect(textInput()).toHaveValue('')
-      expect(topicSelect()).toHaveValue('')
-      // success message from server
-      await screen.findByText('Well done, Foo. Great article!', queryOptions, waitForOptions)
-    })
-  })
-  describe('Editing an existing article', () => {
-    test('[7] Clicking edit button populates the article information into the form', async () => {
-      await loginFlow()
-      // entering edit mode
-      fireEvent.click(screen.getAllByText('Edit')[0])
-      expect(titleInput()).toHaveValue(st.closuresTitle)
-      expect(textInput()).toHaveValue(st.closuresText)
-      expect(topicSelect()).toHaveValue(st.closuresTopic)
-    })
-    test(`[8] Editing the form values and submitting
-        - updates the edited article on the page
-        - resets the form
-        - a success message renders on the page`, async () => {
-      await loginFlow()
-      // entering edit mode
-      fireEvent.click(screen.getAllByText('Edit')[0])
-      // making edits
-      fireEvent.change(titleInput(), { target: { value: 'Fancy Title' } })
-      fireEvent.change(textInput(), { target: { value: 'Fancy text' } })
-      fireEvent.change(topicSelect(), { target: { value: 'React' } })
-      // form filled out
-      expect(titleInput()).toHaveValue('Fancy Title')
-      expect(textInput()).toHaveValue('Fancy text')
-      expect(topicSelect()).toHaveValue('React')
-      // submitting updates
-      fireEvent.click(submitArticleBtn())
-      // edits on the page
-      await screen.findByText('Fancy Title', queryOptions, waitForOptions)
-      screen.getByText('Fancy text', queryOptions)
-      expect(screen.getAllByText('Topic: React', queryOptions)).toHaveLength(2)
-      // success message
-      await screen.findByText('Nice update, Foo!', queryOptions, waitForOptions)
-    })
-  })
-  describe('Deleting an existing article', () => {
-    test(`[9] Clicking delete button on an article
-        - removes it from the page
-        - a success message renders on the page`, async () => {
-      await loginFlow()
-      // hitting delete
-      fireEvent.click(screen.getAllByText('Delete')[0])
-      // article eventually disappears from the page
-      await waitForElementToBeRemoved(() => screen.queryByText(st.closuresTitle, queryOptions))
-      expect(screen.queryByText(st.closuresText, queryOptions)).not.toBeInTheDocument()
-      expect(screen.queryByText(`Topic: ${st.closuresTopic}`, queryOptions)).not.toBeInTheDocument()
-      // success message arrives eventually
-      await screen.findByText('Article 1 was deleted, Foo!', queryOptions, waitForOptions)
-    })
-  })
+  // describe('Posting a new article', () => {
+  //   test(`[5] Submit button is disabled on page load`, async () => {
+  //     await loginFlow()
+  //     expect(submitArticleBtn()).toBeDisabled()
+  //   })
+  //   test(`[6] Filling out the article form and submitting
+  //       - resets the form
+  //       - adds a new article to the page
+  //       - a success message renders on the page`, async () => {
+  //     await loginFlow()
+  //     // filling out form
+  //     fireEvent.change(titleInput(), { target: { value: 'Fancy Title' } })
+  //     fireEvent.change(textInput(), { target: { value: 'Fancy text' } })
+  //     fireEvent.change(topicSelect(), { target: { value: 'React' } })
+  //     expect(titleInput()).toHaveValue('Fancy Title')
+  //     expect(textInput()).toHaveValue('Fancy text')
+  //     expect(topicSelect()).toHaveValue('React')
+  //     // submission renders new article
+  //     fireEvent.click(submitArticleBtn())
+  //     await screen.findByText('Fancy Title', queryOptions, waitForOptions)
+  //     screen.getByText('Fancy text', queryOptions)
+  //     expect(screen.getAllByText('Topic: React', queryOptions)).toHaveLength(2)
+  //     // inputs are cleared
+  //     expect(titleInput()).toHaveValue('')
+  //     expect(textInput()).toHaveValue('')
+  //     expect(topicSelect()).toHaveValue('')
+  //     // success message from server
+  //     await screen.findByText('Well done, Foo. Great article!', queryOptions, waitForOptions)
+  //   })
+  // })
+  // describe('Editing an existing article', () => {
+  //   test('[7] Clicking edit button populates the article information into the form', async () => {
+  //     await loginFlow()
+  //     // entering edit mode
+  //     fireEvent.click(screen.getAllByText('Edit')[0])
+  //     expect(titleInput()).toHaveValue(st.closuresTitle)
+  //     expect(textInput()).toHaveValue(st.closuresText)
+  //     expect(topicSelect()).toHaveValue(st.closuresTopic)
+  //   })
+  //   test(`[8] Editing the form values and submitting
+  //       - updates the edited article on the page
+  //       - resets the form
+  //       - a success message renders on the page`, async () => {
+  //     await loginFlow()
+  //     // entering edit mode
+  //     fireEvent.click(screen.getAllByText('Edit')[0])
+  //     // making edits
+  //     fireEvent.change(titleInput(), { target: { value: 'Fancy Title' } })
+  //     fireEvent.change(textInput(), { target: { value: 'Fancy text' } })
+  //     fireEvent.change(topicSelect(), { target: { value: 'React' } })
+  //     // form filled out
+  //     expect(titleInput()).toHaveValue('Fancy Title')
+  //     expect(textInput()).toHaveValue('Fancy text')
+  //     expect(topicSelect()).toHaveValue('React')
+  //     // submitting updates
+  //     fireEvent.click(submitArticleBtn())
+  //     // edits on the page
+  //     await screen.findByText('Fancy Title', queryOptions, waitForOptions)
+  //     screen.getByText('Fancy text', queryOptions)
+  //     expect(screen.getAllByText('Topic: React', queryOptions)).toHaveLength(2)
+  //     // success message
+  //     await screen.findByText('Nice update, Foo!', queryOptions, waitForOptions)
+  //   })
+  // })
+  // describe('Deleting an existing article', () => {
+  //   test(`[9] Clicking delete button on an article
+  //       - removes it from the page
+  //       - a success message renders on the page`, async () => {
+  //     await loginFlow()
+  //     // hitting delete
+  //     fireEvent.click(screen.getAllByText('Delete')[0])
+  //     // article eventually disappears from the page
+  //     await waitForElementToBeRemoved(() => screen.queryByText(st.closuresTitle, queryOptions))
+  //     expect(screen.queryByText(st.closuresText, queryOptions)).not.toBeInTheDocument()
+  //     expect(screen.queryByText(`Topic: ${st.closuresTopic}`, queryOptions)).not.toBeInTheDocument()
+  //     // success message arrives eventually
+  //     await screen.findByText('Article 1 was deleted, Foo!', queryOptions, waitForOptions)
+  //   })
+  // })
 })

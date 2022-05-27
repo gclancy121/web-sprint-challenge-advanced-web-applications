@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 import PT from 'prop-types'
 
 export default function Articles(props) {
-  const {articleGetter, articles, spinner} = props;
+  const {getArticles, articles} = props;
   // ✨ where are my props? Destructure them here
 
   // ✨ implement conditional logic: if no token exists
@@ -12,13 +12,11 @@ export default function Articles(props) {
 
   useEffect(() => {
     // ✨ grab the articles here, on first render only
-    setTimeout(articleGetter, 2000);
+   getArticles();
   }, [])
 
   const token = localStorage.getItem('token');
-  if (token === null) {
-    return <Navigate to='/' />
-  }
+ 
 
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
