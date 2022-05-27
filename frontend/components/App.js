@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { NavLink, Routes, Route, useNavigate } from 'react-router-dom'
+import axios from 'axios';
 import Articles from './Articles'
 import LoginForm from './LoginForm'
 import Message from './Message'
@@ -18,8 +19,6 @@ export default function App() {
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate()
-  const redirectToLogin = () => { /* ✨ implement */ }
-  const redirectToArticles = () => { /* ✨ implement */ }
 
   const logout = () => {
     // ✨ implement
@@ -29,13 +28,24 @@ export default function App() {
     // using the helper above.
   }
 
-  const login = ({ username, password }) => {
+  const login = (userName, passWord) => {
     // ✨ implement
     // We should flush the message state, turn on the spinner
     // and launch a request to the proper endpoint.
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
+    setMessage('');
+    console.log(userName, passWord)
+    const credentials = {
+      username: userName,
+      password: passWord
+    }
+    axios.post(loginUrl, credentials )
+    .then(res => {
+      localStorage.setItem('token', res.data.token);
+      navigate('/articles');
+    })
   }
 
   const getArticles = () => {
@@ -78,7 +88,7 @@ export default function App() {
           <NavLink id="articlesScreen" to="/articles">Articles</NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<LoginForm login={login}/>} />
           <Route path="articles" element={
             <>
               <ArticleForm />
