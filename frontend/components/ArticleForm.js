@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import PT from 'prop-types'
 
-const initialFormValues = { title: '', text: '', topic: '' }
-
 export default function ArticleForm(props) {
-  console.log(props);
-  const {postArticle, currentArticleId, articles} = props;
-  const [values, setValues] = useState(initialFormValues)
+  // console.log(props);
+  const {postArticle, currentArticleId, articles, values, setValues} = props;
   // ✨ where are my props? Destructure them here
 
     const isDisabled = () => {
@@ -23,19 +20,37 @@ export default function ArticleForm(props) {
   }
   
   const update = () => {
-    console.log(currentArticleId);
-    const finder = articles.find(element => element === currentArticleId);
-    console.log(finder)
-    // setValues({title: articles[finder].title, text: articles[finder].text, topic: articles[finder].text})
+    const edit = currentArticleId - 1;
+    console.log(edit);
+    if (edit === undefined) {
+      return values;
+    } else  if (edit === 0){
+      setValues({title: articles[0].title, text: articles[0].text, topic: articles[0].topic});
+    } else  if (edit === 1){
+      setValues({title: articles[1].title, text: articles[1].text, topic: articles[1].topic});
+    } else if (edit === 2) {
+      setValues({title: articles[2].title, text: articles[2].text, topic: articles[2].topic});
+    } else if (edit === 3) {
+      setValues({title: articles[3].title, text: articles[3].text, topic: articles[3].topic});
+    } else if (edit === 4) {
+      setValues({title: articles[4].title, text: articles[4].text, topic: articles[4].topic});
+    } else if (edit === 5) {
+      setValues({title: articles[5].title, text: articles[5].text, topic: articles[5].topic});
+    } else if (edit === 6) {
+      setValues({title: articles[6].title, text: articles[6].text, topic: articles[6].topic});
+    } else {
+      return values;
+    }
   }
-
   useEffect(() => {
     // ✨ implement
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
     // values of the form. If it's not, we should reset the form back to initial values.
-  })
-  console.log(articles);
+    // update();
+  }, [])
+
+
   const onChange = evt => {
     const { id, value } = evt.target
     setValues({ ...values, [id]: value })
@@ -44,14 +59,15 @@ export default function ArticleForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
+    const id = articles.length + 1
     const newArticle = {
-      article_id: Date.now(),
+      article_id: id,
       title: values.title,
       text: values.text,
       topic: values.topic
     }
     postArticle(newArticle);
-    setValues(initialFormValues);
+    setValues({ title: '', text: '', topic: '' });
 
     // ✨ implement
     // We must submit a new post or update an existing one,
@@ -90,10 +106,9 @@ export default function ArticleForm(props) {
         <option value="Node">Node</option>
       </select>
       <div className="button-group">
-        <button disabled={true} id="submitArticle">Submit</button>
+        <button disabled={true}  id="submitArticle">Submit</button>
         <button onClick={Function.prototype}>Cancel edit</button>
       </div>
-      <h1 onClick={update}>click me bitch</h1>
     </form>
   )
 }

@@ -19,6 +19,10 @@ export default function App() {
   const [currentArticleId, setCurrentArticleId] = useState()
   const [spinnerOn, setSpinnerOn] = useState(false);
 
+  const initialFormValues = { title: '', text: '', topic: '' }
+  const [values, setValues] = useState(initialFormValues);
+
+  
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate();
@@ -92,8 +96,10 @@ export default function App() {
   
 
   const updateArticle = ({ article_id, article}) => {
-  setCurrentArticleId(article_id);
- 
+    // leave the article thing here, it breaks if it goes away for some reason
+    setCurrentArticleId(article_id);
+    setValues(article);
+    
   }
 
  
@@ -119,7 +125,7 @@ export default function App() {
           <Route path="articles" element={
             <>
               <PrivateRoute>
-                <ArticleForm articles={articles} postArticle={postArticle} currentArticleId={currentArticleId} updateArticle={updateArticle}/>
+                <ArticleForm values={values} setValues={setValues} articles={articles} postArticle={postArticle} currentArticleId={currentArticleId} updateArticle={updateArticle}/>
                 <Articles getArticles={getArticles} articles={articles} setCurrentArticleId={setCurrentArticleId} deleteArticle={deleteArticle} updateArticle={updateArticle}/>
               </PrivateRoute>
             </>
