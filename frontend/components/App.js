@@ -62,6 +62,8 @@ export default function App() {
    
   }
 
+  const token = localStorage.getItem('token');
+
   const getArticles = () => {
     // ✨ implement
     // We should flush the message state, turn on the spinner
@@ -71,7 +73,6 @@ export default function App() {
     // If something goes wrong, check the status of the response:
     // if it's a 401 the token might have gone bad, and we should redirect to login.
     // Don't forget to turn off the spinner!
-    const token = localStorage.getItem('token');
 
     axios.get(articlesUrl, {headers: {authorization: token}})
     .then(res => {
@@ -82,7 +83,6 @@ export default function App() {
   }
 
   const postArticle = article => {
-    const token = localStorage.getItem('token');
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
@@ -96,7 +96,6 @@ export default function App() {
   
 
   const updateArticle = ({ article_id, article}) => {
-    // leave the article thing here, it breaks if it goes away for some reason
     setCurrentArticleId(article_id);
     setValues(article);
     
@@ -105,6 +104,12 @@ export default function App() {
  
   const deleteArticle = article_id => {
     // ✨ implement
+    axios.delete(`http://localhost:9000/api/articles/${article_id}`, {headers: {authorization: token}})
+    .then(res => {
+      setMessage(res.data.message);
+      setArticles(articles.filter(id => id.article_id !== article_id));
+    })
+    
   }
  
   return (

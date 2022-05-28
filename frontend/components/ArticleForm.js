@@ -19,35 +19,12 @@ export default function ArticleForm(props) {
       }
   }
   
-  const update = () => {
-    const edit = currentArticleId - 1;
-    console.log(edit);
-    if (edit === undefined) {
-      return values;
-    } else  if (edit === 0){
-      setValues({title: articles[0].title, text: articles[0].text, topic: articles[0].topic});
-    } else  if (edit === 1){
-      setValues({title: articles[1].title, text: articles[1].text, topic: articles[1].topic});
-    } else if (edit === 2) {
-      setValues({title: articles[2].title, text: articles[2].text, topic: articles[2].topic});
-    } else if (edit === 3) {
-      setValues({title: articles[3].title, text: articles[3].text, topic: articles[3].topic});
-    } else if (edit === 4) {
-      setValues({title: articles[4].title, text: articles[4].text, topic: articles[4].topic});
-    } else if (edit === 5) {
-      setValues({title: articles[5].title, text: articles[5].text, topic: articles[5].topic});
-    } else if (edit === 6) {
-      setValues({title: articles[6].title, text: articles[6].text, topic: articles[6].topic});
-    } else {
-      return values;
-    }
-  }
+ 
   useEffect(() => {
     // ✨ implement
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
     // values of the form. If it's not, we should reset the form back to initial values.
-    // update();
   }, [])
 
 
@@ -59,9 +36,8 @@ export default function ArticleForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
-    const id = articles.length + 1
     const newArticle = {
-      article_id: id,
+      article_id: Date.now(),
       title: values.title,
       text: values.text,
       topic: values.topic

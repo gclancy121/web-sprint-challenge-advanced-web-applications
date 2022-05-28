@@ -1,21 +1,21 @@
-import React, {useEffect } from 'react'
-import { Navigate } from 'react-router-dom'
+import React, {useEffect} from 'react'
+import { useNavigate } from 'react-router-dom'
 import PT from 'prop-types'
 
 export default function Articles(props) {
   // console.log(props);
-  const {getArticles, articles, setCurrentArticleId, updateArticle} = props;
+  const {getArticles, articles, setCurrentArticleId, updateArticle, deleteArticle} = props;
+  const navigate=useNavigate();
   // ✨ where are my props? Destructure them here
 
   // ✨ implement conditional logic: if no token exists
   // we should render a Navigate to login screen (React Router v.6)
-  
 
   useEffect(() => {
     // ✨ grab the articles here, on first render only
    getArticles();
   }, [])
-
+  
   const token = localStorage.getItem('token');
   
   const updateTheArticle = (art) => {
@@ -23,6 +23,9 @@ export default function Articles(props) {
     updateArticle({article_id: art, article: finalArticle});
   }
  
+  const deleteTheArticle = (id) => {
+    deleteArticle(id);
+  }
 
   return (
     // ✨ fix the JSX: replace `Function.prototype` with actual functions
@@ -42,7 +45,7 @@ export default function Articles(props) {
                 </div>
                 <div>
                   <button onClick={() => updateTheArticle(art.article_id)}>Edit</button>
-                  <button onClick={Function.prototype}>Delete</button>
+                  <button onClick={() => deleteTheArticle(art.article_id)}>Delete</button>
                 </div>
               </div>
             )
