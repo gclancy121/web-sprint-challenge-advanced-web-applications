@@ -17,7 +17,8 @@ export default function App() {
   const [message, setMessage] = useState('')
   const [articles, setArticles] = useState([])
   const [currentArticleId, setCurrentArticleId] = useState()
-  const [spinnerOn, setSpinnerOn] = useState(false)
+  const [spinnerOn, setSpinnerOn] = useState(false);
+
 
   // ✨ Research `useNavigate` in React Router v.6
   const navigate = useNavigate();
@@ -70,7 +71,6 @@ export default function App() {
 
     axios.get(articlesUrl, {headers: {authorization: token}})
     .then(res => {
-      console.log(res)
         setArticles(res.data.articles)
         setMessage(res.data.message)
         setSpinnerOn(false);
@@ -78,17 +78,25 @@ export default function App() {
   }
 
   const postArticle = article => {
+    const token = localStorage.getItem('token');
     // ✨ implement
     // The flow is very similar to the `getArticles` function.
     // You'll know what to do! Use log statements or breakpoints
     // to inspect the response from the server.
+    axios.post(articlesUrl, article, {headers: {authorization: token}})
+    .then(res => {
+      setArticles([...articles, article]);
+      setMessage(res.data.message);
+    })
+  }
+  
+
+  const updateArticle = ({ article_id, article}) => {
+  setCurrentArticleId(article_id);
+ 
   }
 
-  const updateArticle = ({ article_id, article }) => {
-    // ✨ implement
-    // You got this!
-  }
-
+ 
   const deleteArticle = article_id => {
     // ✨ implement
   }
@@ -111,8 +119,8 @@ export default function App() {
           <Route path="articles" element={
             <>
               <PrivateRoute>
-                <ArticleForm />
-                <Articles getArticles={getArticles} articles={articles} />
+                <ArticleForm articles={articles} postArticle={postArticle} currentArticleId={currentArticleId} updateArticle={updateArticle}/>
+                <Articles getArticles={getArticles} articles={articles} setCurrentArticleId={setCurrentArticleId} deleteArticle={deleteArticle} updateArticle={updateArticle}/>
               </PrivateRoute>
             </>
           } />

@@ -3,7 +3,8 @@ import { Navigate } from 'react-router-dom'
 import PT from 'prop-types'
 
 export default function Articles(props) {
-  const {getArticles, articles} = props;
+  // console.log(props);
+  const {getArticles, articles, setCurrentArticleId, updateArticle} = props;
   // ✨ where are my props? Destructure them here
 
   // ✨ implement conditional logic: if no token exists
@@ -16,6 +17,11 @@ export default function Articles(props) {
   }, [])
 
   const token = localStorage.getItem('token');
+  
+  const updateTheArticle = (art) => {
+    const finalArticle = articles[art - 1];
+    updateArticle({article_id: art, article: finalArticle});
+  }
  
 
   return (
@@ -35,8 +41,8 @@ export default function Articles(props) {
                   <p>Topic: {art.topic}</p>
                 </div>
                 <div>
-                  <button disabled={true} onClick={Function.prototype}>Edit</button>
-                  <button disabled={true} onClick={Function.prototype}>Delete</button>
+                  <button onClick={() => updateTheArticle(art.article_id)}>Edit</button>
+                  <button onClick={Function.prototype}>Delete</button>
                 </div>
               </div>
             )

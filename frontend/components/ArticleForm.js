@@ -4,6 +4,8 @@ import PT from 'prop-types'
 const initialFormValues = { title: '', text: '', topic: '' }
 
 export default function ArticleForm(props) {
+  console.log(props);
+  const {postArticle, currentArticleId, articles} = props;
   const [values, setValues] = useState(initialFormValues)
   // ✨ where are my props? Destructure them here
 
@@ -19,13 +21,21 @@ export default function ArticleForm(props) {
         return button.disabled = true;
       }
   }
+  
+  const update = () => {
+    console.log(currentArticleId);
+    const finder = articles.find(element => element === currentArticleId);
+    console.log(finder)
+    // setValues({title: articles[finder].title, text: articles[finder].text, topic: articles[finder].text})
+  }
+
   useEffect(() => {
     // ✨ implement
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
     // values of the form. If it's not, we should reset the form back to initial values.
   })
-
+  console.log(articles);
   const onChange = evt => {
     const { id, value } = evt.target
     setValues({ ...values, [id]: value })
@@ -34,11 +44,24 @@ export default function ArticleForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
+    const newArticle = {
+      article_id: Date.now(),
+      title: values.title,
+      text: values.text,
+      topic: values.topic
+    }
+    postArticle(newArticle);
+    setValues(initialFormValues);
+
     // ✨ implement
     // We must submit a new post or update an existing one,
     // depending on the truthyness of the `currentArticle` prop.
+
   }
 
+ 
+
+  
   
 
   return (
@@ -70,6 +93,7 @@ export default function ArticleForm(props) {
         <button disabled={true} id="submitArticle">Submit</button>
         <button onClick={Function.prototype}>Cancel edit</button>
       </div>
+      <h1 onClick={update}>click me bitch</h1>
     </form>
   )
 }
