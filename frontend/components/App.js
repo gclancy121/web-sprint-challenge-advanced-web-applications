@@ -101,6 +101,7 @@ export default function App() {
     
   }
 
+
  
   const deleteArticle = article_id => {
     // ✨ implement
@@ -130,8 +131,22 @@ export default function App() {
           <Route path="articles" element={
             <>
               <PrivateRoute>
-                <ArticleForm values={values} setValues={setValues} articles={articles} postArticle={postArticle} currentArticleId={currentArticleId} updateArticle={updateArticle}/>
-                <Articles getArticles={getArticles} articles={articles} setCurrentArticleId={setCurrentArticleId} deleteArticle={deleteArticle} updateArticle={updateArticle}/>
+                <ArticleForm setMessage ={setMessage} 
+                values={values} 
+                setValues={setValues} 
+                articles={articles} 
+                setArticles={setArticles}
+                postArticle={postArticle} 
+                currentArticleId={currentArticleId} 
+                updateArticle={updateArticle} 
+                setCurrentArticleId={setCurrentArticleId}
+                />
+                <Articles 
+                getArticles={getArticles} 
+                articles={articles} 
+                setCurrentArticleId={setCurrentArticleId} 
+                deleteArticle={deleteArticle} 
+                updateArticle={updateArticle}/>
               </PrivateRoute>
             </>
           } />

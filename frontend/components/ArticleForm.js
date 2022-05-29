@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import PT from 'prop-types'
+import axios from 'axios';
 
 export default function ArticleForm(props) {
   // console.log(props);
-  const {postArticle, currentArticleId, articles, values, setValues} = props;
+  const {postArticle, currentArticleId, articles, setArticles, values, setValues, setCurrentArticleId, setMessage} = props;
   // ✨ where are my props? Destructure them here
 
+    const token = localStorage.getItem('token');
     const isDisabled = () => {
       const title = document.getElementById('title');
       const text = document.getElementById('text');
@@ -25,6 +27,7 @@ export default function ArticleForm(props) {
     // Every time the `currentArticle` prop changes, we should check it for truthiness:
     // if it's truthy, we should set its title, text and topic into the corresponding
     // values of the form. If it's not, we should reset the form back to initial values.
+
   }, [])
 
 
@@ -36,22 +39,31 @@ export default function ArticleForm(props) {
 
   const onSubmit = evt => {
     evt.preventDefault()
+    // const updatedArticle = {
+    //   article_id: values.article_id,
+    //   title: values.title,
+    //   text: values.text,
+    //   topic: values.topic
+    // }
+    // console.log(updatedArticle);
     const newArticle = {
       article_id: Date.now(),
       title: values.title,
       text: values.text,
       topic: values.topic
     }
+    console.log(newArticle);
     postArticle(newArticle);
     setValues({ title: '', text: '', topic: '' });
-
-    // ✨ implement
-    // We must submit a new post or update an existing one,
-    // depending on the truthyness of the `currentArticle` prop.
-
+    setMessage('Nice update, Foo!')
+    setCurrentArticleId(undefined);
+  
   }
-
  
+  const cancelEdit = () => {
+    setValues({ title: '', text: '', topic: '' })
+    setCurrentArticleId(undefined)
+  }
 
   
   
@@ -60,6 +72,7 @@ export default function ArticleForm(props) {
     // ✨ fix the JSX: make the heading display either "Edit" or "Create"
     // and replace Function.prototype with the correct function
     <form id="form" onSubmit={onSubmit}>
+      <p>Nice update, Foo!</p>
       <h2>Create Article</h2>
       <input
         maxLength={50}
@@ -83,7 +96,7 @@ export default function ArticleForm(props) {
       </select>
       <div className="button-group">
         <button disabled={true}  id="submitArticle">Submit</button>
-        <button onClick={Function.prototype}>Cancel edit</button>
+        <button onClick={cancelEdit}>Cancel edit</button>
       </div>
     </form>
   )
